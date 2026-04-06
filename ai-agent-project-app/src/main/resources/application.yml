@@ -1,0 +1,5 @@
+spring:
+  config:
+    name: ai-agent-project-app
+  profiles:
+    active: dev
