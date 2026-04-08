@@ -4,12 +4,15 @@ import cn.bugstack.wrench.design.framework.tree.StrategyHandler;
 import com.xjtu.ai.domain.agent.model.entity.ArmoryCommandEntity;
 import com.xjtu.ai.domain.agent.model.valobj.AIAgentRegisterVO;
 import com.xjtu.ai.domain.agent.model.valobj.AiAgentConfigTableVO;
+import com.xjtu.ai.domain.agent.model.valobj.config.AiApi;
 import com.xjtu.ai.domain.agent.service.armory.AbstractArmorySupport;
 import com.xjtu.ai.domain.agent.service.armory.factory.DefaultArmoryFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.ai.openai.api.OpenAiApi;
 import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
 
 /**
  * @author mlei@xjtu
@@ -20,13 +23,16 @@ import org.springframework.stereotype.Service;
 @Service
 public class AIApiNode extends AbstractArmorySupport {
 
+    @Resource
+    private ChatModelNode chatModelNode;
+
     @Override
     protected AIAgentRegisterVO doApply(ArmoryCommandEntity requestParameter, DefaultArmoryFactory.DynamicContext dynamicContext) throws Exception {
 
         log.info("Ai Agent 装配操作 - AIApiNode");
 
         AiAgentConfigTableVO aiAgentConfigTableVO = requestParameter.getAiAgentConfigTableVO();
-        AiAgentConfigTableVO.Module.AiApi aiApiConfig = aiAgentConfigTableVO.getModule().getAiApi();
+        AiApi aiApiConfig = aiAgentConfigTableVO.getModule().getAiApi();
 
         OpenAiApi openAiapi = OpenAiApi.builder()
                 .baseUrl(aiApiConfig.getBaseUrl())
@@ -42,6 +48,6 @@ public class AIApiNode extends AbstractArmorySupport {
 
     @Override
     public StrategyHandler<ArmoryCommandEntity, DefaultArmoryFactory.DynamicContext, AIAgentRegisterVO> get(ArmoryCommandEntity armoryCommandEntity, DefaultArmoryFactory.DynamicContext dynamicContext) throws Exception {
-        return defaultStrategyHandler;
+        return chatModelNode;
     }
 }
