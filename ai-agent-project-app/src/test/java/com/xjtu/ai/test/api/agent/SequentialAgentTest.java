@@ -43,7 +43,7 @@ public class SequentialAgentTest {
         ChatModel chatModel = OpenAiChatModel.builder()
                 .openAiApi(openAiApi)
                 .defaultOptions(OpenAiChatOptions.builder()
-                        .model("glm-4.5-air")
+                        .model("glm-5.1")
                         .toolCallbacks(new SyncMcpToolCallbackProvider(sseMcpClient()).getToolCallbacks())
                         .build())
                 .build();
