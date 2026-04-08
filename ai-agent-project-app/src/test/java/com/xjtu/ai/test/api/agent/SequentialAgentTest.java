@@ -160,8 +160,8 @@ public class SequentialAgentTest {
     }
 
     public static McpSyncClient sseMcpClient() {
-        HttpClientSseClientTransport sseClientTransport = HttpClientSseClientTransport.builder("http://appbuilder.baidu.com/v2/ai_search/mcp/")
-                .sseEndpoint("sse?api_key=bce-v3/ALTAK-8aUFxUIzNOoRuP3sn1gRG/605c615edb6d9b26b361a78215add2ee8fe2e362")
+        HttpClientSseClientTransport sseClientTransport = HttpClientSseClientTransport.builder("http://appbuilder.baidu.com")
+                .sseEndpoint("/v2/ai_search/mcp/sse?api_key=bce-v3/ALTAK-8aUFxUIzNOoRuP3sn1gRG/605c615edb6d9b26b361a78215add2ee8fe2e362")
                 .build();
 
         McpSyncClient mcpSyncClient = McpClient.sync(sseClientTransport).requestTimeout(Duration.ofMinutes(360)).build();

@@ -38,7 +38,7 @@ public class SpringAiToolTest {
                         .build())
                 .build();
 
-        String call = chatModel.call("简述西安交通大学的历史");
+        String call = chatModel.call("你使用了什么mcp服务");
 
         log.info("测试结果:{}", call);
     }
@@ -50,8 +50,8 @@ public class SpringAiToolTest {
     public static McpSyncClient sseMcpClient() {
 
         // 自己申请 api_key
-        HttpClientSseClientTransport sseClientTransport = HttpClientSseClientTransport.builder("http://appbuilder.baidu.com/v2/ai_search/mcp/")
-                .sseEndpoint("sse?api_key=bce-v3/ALTAK-8aUFxUIzNOoRuP3sn1gRG/605c615edb6d9b26b361a78215add2ee8fe2e362")
+        HttpClientSseClientTransport sseClientTransport = HttpClientSseClientTransport.builder("http://appbuilder.baidu.com")
+                .sseEndpoint("/v2/ai_search/mcp/sse?api_key=bce-v3/ALTAK-8aUFxUIzNOoRuP3sn1gRG/605c615edb6d9b26b361a78215add2ee8fe2e362")
                 .build();
 
         McpSyncClient mcpSyncClient = McpClient.sync(sseClientTransport).requestTimeout(Duration.ofMinutes(360)).build();

@@ -144,12 +144,12 @@ public class AiAgentConfigTableVO {
                     /**
                      * MCP服务端基础地址
                      */
-                    private String baseUrl;
+                    private String baseUri;
 
                     /**
                      * MCP服务端接口端点路径
                      */
-                    private String endpoint;
+                    private String sseEndpoint;
 
                     /**
                      * 请求超时时间，单位：毫秒，默认值 3000
