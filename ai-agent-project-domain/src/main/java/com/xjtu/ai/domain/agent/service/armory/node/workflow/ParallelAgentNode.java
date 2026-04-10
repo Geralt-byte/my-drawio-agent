@@ -1,6 +1,8 @@
 package com.xjtu.ai.domain.agent.service.armory.node.workflow;
 
 import cn.bugstack.wrench.design.framework.tree.StrategyHandler;
+import com.google.adk.agents.BaseAgent;
+import com.google.adk.agents.ParallelAgent;
 import com.xjtu.ai.domain.agent.model.entity.ArmoryCommandEntity;
 import com.xjtu.ai.domain.agent.model.valobj.AIAgentRegisterVO;
 import com.xjtu.ai.domain.agent.model.valobj.AiAgentConfigTableVO;
@@ -20,9 +22,27 @@ import java.util.List;
 @Slf4j
 @Service("parallelAgentNode")
 public class ParallelAgentNode extends AbstractArmorySupport {
+
     @Override
     protected AIAgentRegisterVO doApply(ArmoryCommandEntity armoryCommandEntity, DefaultArmoryFactory.DynamicContext dynamicContext) throws Exception {
-        return null;
+
+        log.info("Ai Agent 装配操作 - ParallelAgentNode");
+
+        List<AiAgentConfigTableVO.Module.AgentWorkflow> agentWorkflows = dynamicContext.getAgentWorkflows();
+        AiAgentConfigTableVO.Module.AgentWorkflow agentWorkflow = agentWorkflows.remove(0);
+
+        List<String> subAgentNames = agentWorkflow.getSubAgents();
+        List<BaseAgent> agents = dynamicContext.queryAgentList(subAgentNames);
+
+        ParallelAgent parallelAgent = ParallelAgent.builder()
+                .name(agentWorkflow.getName())
+                .description(agentWorkflow.getDescription())
+                .subAgents(agents)
+                .build();
+
+        dynamicContext.getAgentGroup().put(agentWorkflow.getName(), parallelAgent);
+
+        return router(armoryCommandEntity, dynamicContext);
     }
 
     @Override
@@ -43,8 +63,8 @@ public class ParallelAgentNode extends AbstractArmorySupport {
         String node = agentTypeEnum.getNode();
 
         return switch (node) {
-            case "parallel" -> getBean("parallel");
-            case "sequential" -> getBean("sequential");
+            case "loopAgentNode" -> getBean("loopAgentNode");
+            case "sequentialAgentNode" -> getBean("sequentialAgentNode");
             default -> defaultStrategyHandler;
         };
     }

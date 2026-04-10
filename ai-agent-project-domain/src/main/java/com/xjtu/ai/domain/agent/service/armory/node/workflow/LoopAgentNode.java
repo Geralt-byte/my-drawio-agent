@@ -1,6 +1,8 @@
 package com.xjtu.ai.domain.agent.service.armory.node.workflow;
 
 import cn.bugstack.wrench.design.framework.tree.StrategyHandler;
+import com.google.adk.agents.BaseAgent;
+import com.google.adk.agents.LoopAgent;
 import com.xjtu.ai.domain.agent.model.entity.ArmoryCommandEntity;
 import com.xjtu.ai.domain.agent.model.valobj.AIAgentRegisterVO;
 import com.xjtu.ai.domain.agent.model.valobj.AiAgentConfigTableVO;
@@ -20,13 +22,34 @@ import java.util.List;
 @Slf4j
 @Service("loopAgentNode")
 public class LoopAgentNode extends AbstractArmorySupport {
+
     @Override
     protected AIAgentRegisterVO doApply(ArmoryCommandEntity armoryCommandEntity, DefaultArmoryFactory.DynamicContext dynamicContext) throws Exception {
-        return null;
+
+        log.info("Ai Agent 装配操作 - LoopAgentNode");
+
+        List<AiAgentConfigTableVO.Module.AgentWorkflow> agentWorkflows = dynamicContext.getAgentWorkflows();
+        AiAgentConfigTableVO.Module.AgentWorkflow agentWorkflow = agentWorkflows.remove(0);
+
+        List<String> subAgentNames = agentWorkflow.getSubAgents();
+        List<BaseAgent> agents = dynamicContext.queryAgentList(subAgentNames);
+
+        LoopAgent loopAgent = LoopAgent.builder()
+                .name(agentWorkflow.getName())
+                .description(agentWorkflow.getDescription())
+                .subAgents(agents)
+                .maxIterations(agentWorkflow.getMaxIterations())
+                .build();
+
+        dynamicContext.getAgentGroup().put(agentWorkflow.getName(), loopAgent);
+
+        return router(armoryCommandEntity, dynamicContext);
     }
 
     @Override
     public StrategyHandler<ArmoryCommandEntity, DefaultArmoryFactory.DynamicContext, AIAgentRegisterVO> get(ArmoryCommandEntity armoryCommandEntity, DefaultArmoryFactory.DynamicContext dynamicContext) throws Exception {
+
+
         List<AiAgentConfigTableVO.Module.AgentWorkflow> agentWorkflows = dynamicContext.getAgentWorkflows();
 
         if (agentWorkflows == null || agentWorkflows.isEmpty()) {
@@ -43,8 +66,8 @@ public class LoopAgentNode extends AbstractArmorySupport {
         String node = agentTypeEnum.getNode();
 
         return switch (node) {
-            case "parallel" -> getBean("parallel");
-            case "sequential" -> getBean("sequential");
+            case "parallelAgentNode" -> getBean("parallelAgentNode");
+            case "sequentialAgentNode" -> getBean("sequentialAgentNode");
             default -> defaultStrategyHandler;
         };
     }

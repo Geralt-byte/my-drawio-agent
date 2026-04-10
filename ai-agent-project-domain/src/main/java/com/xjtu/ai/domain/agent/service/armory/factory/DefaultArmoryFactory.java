@@ -15,10 +15,8 @@ import org.springframework.ai.openai.api.OpenAiApi;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author mlei@xjtu
@@ -57,6 +55,24 @@ public class DefaultArmoryFactory {
 
         public <T> T getValue(String key) {
             return (T) dataObjects.get(key);
+        }
+
+        /*返回子agent列表*/
+        public List<BaseAgent> queryAgentList(List<String> agentNames) {
+
+            if (agentNames == null || agentNames.isEmpty()) {
+                return Collections.emptyList();
+            }
+
+            List<BaseAgent> agents = new ArrayList<>();
+            for (String agentName : agentNames) {
+                BaseAgent baseAgent = agentGroup.get(agentName);
+                if (baseAgent != null) {
+                    agents.add(baseAgent);
+                }
+            }
+
+            return agents;
         }
     }
 }
