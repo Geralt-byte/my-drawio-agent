@@ -5,8 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.xjtu.ai.domain.agent.model.entity.ArmoryCommandEntity;
 import com.xjtu.ai.domain.agent.model.valobj.AIAgentRegisterVO;
 import com.xjtu.ai.domain.agent.model.valobj.AiAgentConfigTableVO;
-import com.xjtu.ai.domain.agent.model.valobj.config.ChatModel;
-import com.xjtu.ai.domain.agent.model.valobj.config.ToolMcp;
 import com.xjtu.ai.domain.agent.service.armory.AbstractArmorySupport;
 import com.xjtu.ai.domain.agent.service.armory.factory.DefaultArmoryFactory;
 import io.modelcontextprotocol.client.McpClient;
@@ -18,12 +16,14 @@ import io.modelcontextprotocol.json.jackson.JacksonMcpJsonMapper;
 import io.modelcontextprotocol.spec.McpSchema;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.mcp.SyncMcpToolCallbackProvider;
 import org.springframework.ai.openai.OpenAiChatModel;
 import org.springframework.ai.openai.OpenAiChatOptions;
 import org.springframework.ai.openai.api.OpenAiApi;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Duration;
@@ -39,6 +39,8 @@ import java.util.List;
 @Service
 public class ChatModelNode extends AbstractArmorySupport {
 
+    @Resource
+    private AgentNode agentNode;
 
     @Override
     protected AIAgentRegisterVO doApply(ArmoryCommandEntity armoryCommandEntity, DefaultArmoryFactory.DynamicContext dynamicContext) throws Exception {
@@ -47,13 +49,13 @@ public class ChatModelNode extends AbstractArmorySupport {
         OpenAiApi openAiApi = dynamicContext.getOpenAiApi();
 
         AiAgentConfigTableVO aiAgentConfigTableVO = armoryCommandEntity.getAiAgentConfigTableVO();
-        ChatModel chatModelConfig = aiAgentConfigTableVO.getModule().getChatModel();
+        AiAgentConfigTableVO.Module.ChatModel chatModelConfig = aiAgentConfigTableVO.getModule().getChatModel();
         List<McpSyncClient> mcpSyncClients = new ArrayList<>();
-        List<ToolMcp> toolMcpList = chatModelConfig.getToolMcpList();
-        for (ToolMcp toolMcp : toolMcpList) {
+        List<AiAgentConfigTableVO.Module.ChatModel.ToolMcp> toolMcpList = chatModelConfig.getToolMcpList();
+        for (AiAgentConfigTableVO.Module.ChatModel.ToolMcp toolMcp : toolMcpList) {
             mcpSyncClients.add(createMcpSyncClient(toolMcp));
         }
-        org.springframework.ai.chat.model.ChatModel chatModel = OpenAiChatModel.builder()
+        ChatModel chatModel = OpenAiChatModel.builder()
                 .openAiApi(openAiApi)
                 .defaultOptions(OpenAiChatOptions.builder()
                         .model(chatModelConfig.getModel())
@@ -72,13 +74,13 @@ public class ChatModelNode extends AbstractArmorySupport {
 
     @Override
     public StrategyHandler<ArmoryCommandEntity, DefaultArmoryFactory.DynamicContext, AIAgentRegisterVO> get(ArmoryCommandEntity armoryCommandEntity, DefaultArmoryFactory.DynamicContext dynamicContext) throws Exception {
-        return defaultStrategyHandler;
+        return agentNode;
     }
 
-    private McpSyncClient createMcpSyncClient(ToolMcp toolMcp) throws MalformedURLException {
+    private McpSyncClient createMcpSyncClient(AiAgentConfigTableVO.Module.ChatModel.ToolMcp toolMcp) throws MalformedURLException {
 
-        ToolMcp.SSEServerParameters sseConfig = toolMcp.getSse();
-        ToolMcp.StdioServerParameters stdioConfig = toolMcp.getStdio();
+        AiAgentConfigTableVO.Module.ChatModel.ToolMcp.SSEServerParameters sseConfig = toolMcp.getSse();
+        AiAgentConfigTableVO.Module.ChatModel.ToolMcp.StdioServerParameters stdioConfig = toolMcp.getStdio();
 
         if (sseConfig != null) {
             String originalBaseUri = sseConfig.getBaseUri();
@@ -117,7 +119,7 @@ public class ChatModelNode extends AbstractArmorySupport {
 
         if (stdioConfig != null) {
 
-            ToolMcp.StdioServerParameters.ServerParameters serverParameters = stdioConfig.getServerParameters();
+            AiAgentConfigTableVO.Module.ChatModel.ToolMcp.StdioServerParameters.ServerParameters serverParameters = stdioConfig.getServerParameters();
 
             ServerParameters stdioParms = ServerParameters.builder(serverParameters.getCommand())
                     .args(serverParameters.getArgs())

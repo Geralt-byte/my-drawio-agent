@@ -4,7 +4,6 @@ import cn.bugstack.wrench.design.framework.tree.StrategyHandler;
 import com.xjtu.ai.domain.agent.model.entity.ArmoryCommandEntity;
 import com.xjtu.ai.domain.agent.model.valobj.AIAgentRegisterVO;
 import com.xjtu.ai.domain.agent.model.valobj.AiAgentConfigTableVO;
-import com.xjtu.ai.domain.agent.model.valobj.config.AiApi;
 import com.xjtu.ai.domain.agent.service.armory.AbstractArmorySupport;
 import com.xjtu.ai.domain.agent.service.armory.factory.DefaultArmoryFactory;
 import lombok.extern.slf4j.Slf4j;
@@ -32,7 +31,7 @@ public class AIApiNode extends AbstractArmorySupport {
         log.info("Ai Agent 装配操作 - AIApiNode");
 
         AiAgentConfigTableVO aiAgentConfigTableVO = requestParameter.getAiAgentConfigTableVO();
-        AiApi aiApiConfig = aiAgentConfigTableVO.getModule().getAiApi();
+        AiAgentConfigTableVO.Module.AiApi aiApiConfig = aiAgentConfigTableVO.getModule().getAiApi();
 
         OpenAiApi openAiapi = OpenAiApi.builder()
                 .baseUrl(aiApiConfig.getBaseUrl())
