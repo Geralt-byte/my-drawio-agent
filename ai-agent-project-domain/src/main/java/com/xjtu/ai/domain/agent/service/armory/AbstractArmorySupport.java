@@ -5,7 +5,9 @@ import com.xjtu.ai.domain.agent.model.entity.ArmoryCommandEntity;
 import com.xjtu.ai.domain.agent.model.valobj.AIAgentRegisterVO;
 import com.xjtu.ai.domain.agent.service.armory.factory.DefaultArmoryFactory;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationContext;
 
+import javax.annotation.Resource;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 
@@ -17,8 +19,15 @@ import java.util.concurrent.TimeoutException;
 @Slf4j
 public abstract class AbstractArmorySupport extends AbstractMultiThreadStrategyRouter<ArmoryCommandEntity, DefaultArmoryFactory.DynamicContext, AIAgentRegisterVO> {
 
+    @Resource
+    protected ApplicationContext applicationContext;
+
     @Override
     protected void multiThread(ArmoryCommandEntity requestParameter, DefaultArmoryFactory.DynamicContext dynamicContext) throws ExecutionException, InterruptedException, TimeoutException {
 
+    }
+
+    protected <T> T getBean(String beanName) {
+        return (T) applicationContext.getBean(beanName);
     }
 }

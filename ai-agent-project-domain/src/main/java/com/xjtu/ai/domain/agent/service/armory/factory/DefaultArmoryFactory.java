@@ -4,6 +4,7 @@ import cn.bugstack.wrench.design.framework.tree.StrategyHandler;
 import com.google.adk.agents.BaseAgent;
 import com.xjtu.ai.domain.agent.model.entity.ArmoryCommandEntity;
 import com.xjtu.ai.domain.agent.model.valobj.AIAgentRegisterVO;
+import com.xjtu.ai.domain.agent.model.valobj.AiAgentConfigTableVO;
 import com.xjtu.ai.domain.agent.service.armory.node.RootNode;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,7 +15,9 @@ import org.springframework.ai.openai.api.OpenAiApi;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -43,6 +46,8 @@ public class DefaultArmoryFactory {
         private ChatModel chatModel;
 
         private Map<String, BaseAgent> agentGroup = new HashMap<>();
+
+        private List<AiAgentConfigTableVO.Module.AgentWorkflow> agentWorkflows = new ArrayList<>();
 
         private Map<String, Object> dataObjects = new HashMap<>();
 
