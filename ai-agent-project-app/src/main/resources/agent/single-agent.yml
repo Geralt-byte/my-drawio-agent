@@ -15,7 +15,7 @@ ai:
               completions-path: v4/chat/completions
               embeddings-path: v4/embeddings
             chat-model:
-              model: glm-4.5-air
+              model: glm-4.6v
               tool-mcp-list:
                 - sse:
                     name: baidu-search
@@ -25,12 +25,12 @@ ai:
                 - local:
                     name: myToolCallbackProvider
             agents:
-              - name: chatAgent
-                description: 唐朝历史解读.
+              - name: photoAgent
+                description: 图片识别助手.
                 instruction: |
-                  你是一个精通唐朝历史的智能体，能够根据用户的问题，提供准确的历史信息。
+                  你是一个具有OCR功能的智能体，能够根据用户的问题，提供准确的图像识别结果。
             runner:
-              agent-name: chatAgent
+              agent-name: photoAgent
               pluginNameList:
                 - myLogPlugin
                 - myTestPlugin
