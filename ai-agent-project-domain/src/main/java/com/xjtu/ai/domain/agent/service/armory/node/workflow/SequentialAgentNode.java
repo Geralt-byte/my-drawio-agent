@@ -8,9 +8,11 @@ import com.xjtu.ai.domain.agent.model.valobj.AIAgentRegisterVO;
 import com.xjtu.ai.domain.agent.model.valobj.AiAgentConfigTableVO;
 import com.xjtu.ai.domain.agent.service.armory.AbstractArmorySupport;
 import com.xjtu.ai.domain.agent.service.armory.factory.DefaultArmoryFactory;
+import com.xjtu.ai.domain.agent.service.armory.node.RunnerNode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -21,6 +23,9 @@ import java.util.List;
 @Slf4j
 @Service("sequentialAgentNode")
 public class SequentialAgentNode extends AbstractArmorySupport {
+
+    @Resource
+    private RunnerNode runnerNode;
 
     @Override
     protected AIAgentRegisterVO doApply(ArmoryCommandEntity armoryCommandEntity, DefaultArmoryFactory.DynamicContext dynamicContext) throws Exception {
@@ -48,6 +53,6 @@ public class SequentialAgentNode extends AbstractArmorySupport {
 
     @Override
     public StrategyHandler<ArmoryCommandEntity, DefaultArmoryFactory.DynamicContext, AIAgentRegisterVO> get(ArmoryCommandEntity armoryCommandEntity, DefaultArmoryFactory.DynamicContext dynamicContext) throws Exception {
-        return defaultStrategyHandler;
+        return runnerNode;
     }
 }
