@@ -1,0 +1,53 @@
+package com.xjtu.ai.test.app;
+
+import com.alibaba.fastjson.JSON;
+import com.google.adk.events.Event;
+import com.google.adk.runner.InMemoryRunner;
+import com.google.adk.sessions.Session;
+import com.google.genai.types.Content;
+import com.google.genai.types.Part;
+import com.xjtu.ai.domain.agent.model.valobj.AIAgentRegisterVO;
+import io.reactivex.rxjava3.core.Flowable;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.ApplicationContext;
+import org.springframework.test.context.junit4.SpringRunner;
+
+import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.CountDownLatch;
+
+/**
+ * @author mlei@xjtu
+ * @description AiAgentAutoConfigTest
+ * @create 2026/4/12 12:14
+ */
+@Slf4j
+@SpringBootTest
+@RunWith(SpringRunner.class)
+public class AiAgentAutoConfigTest {
+
+    @Resource
+    private ApplicationContext applicationContext;
+
+    @Test
+    public void test() throws InterruptedException {
+        AIAgentRegisterVO aiAgentRegisterVO = applicationContext.getBean("100001", AIAgentRegisterVO.class);
+
+        String appName = aiAgentRegisterVO.getAppName();
+        InMemoryRunner runner = aiAgentRegisterVO.getRunner();
+
+        Session session = runner.sessionService().createSession(appName, "mlei").blockingGet();
+
+        Content msg = Content.fromParts(Part.fromText("编写堆排序"));
+        Flowable<Event> events = runner.runAsync("mlei", session.id(), msg);
+
+        List<String> outputs = new ArrayList<>();
+        events.blockingForEach(event -> outputs.add(event.stringifyContent()));
+
+        log.info("测试结果:{}", JSON.toJSONString(outputs));
+    }
+}

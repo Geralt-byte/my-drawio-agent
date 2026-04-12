@@ -46,6 +46,8 @@ public class SequentialAgentNode extends AbstractArmorySupport {
 
         dynamicContext.getAgentGroup().put(agentWorkflow.getName(), sequentialAgent);
 
+        dynamicContext.setSequentialAgent(sequentialAgent);
+
         registerBean(agentWorkflow.getName(), SequentialAgent.class, sequentialAgent);
 
         return router(armoryCommandEntity, dynamicContext);

@@ -24,6 +24,9 @@ import java.util.List;
 @Service
 public class AgentNode extends AbstractArmorySupport {
 
+    @Resource
+    private AgentWorkflowNode agentWorkflowNode;
+
     @Override
     protected AIAgentRegisterVO doApply(ArmoryCommandEntity armoryCommandEntity, DefaultArmoryFactory.DynamicContext dynamicContext) throws Exception {
 
@@ -47,6 +50,6 @@ public class AgentNode extends AbstractArmorySupport {
 
     @Override
     public StrategyHandler<ArmoryCommandEntity, DefaultArmoryFactory.DynamicContext, AIAgentRegisterVO> get(ArmoryCommandEntity armoryCommandEntity, DefaultArmoryFactory.DynamicContext dynamicContext) throws Exception {
-        return defaultStrategyHandler;
+        return agentWorkflowNode;
     }
 }
