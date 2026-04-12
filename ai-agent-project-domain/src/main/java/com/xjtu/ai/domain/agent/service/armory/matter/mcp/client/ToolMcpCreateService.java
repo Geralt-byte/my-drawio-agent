@@ -1,4 +1,4 @@
-package com.xjtu.ai.domain.agent.service.armory.mcp.client;
+package com.xjtu.ai.domain.agent.service.armory.matter.mcp.client;
 
 import com.xjtu.ai.domain.agent.model.valobj.AiAgentConfigTableVO;
 import org.springframework.ai.tool.ToolCallback;

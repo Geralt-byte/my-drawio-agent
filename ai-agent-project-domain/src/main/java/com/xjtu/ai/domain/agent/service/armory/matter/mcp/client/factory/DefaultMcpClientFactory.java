@@ -1,9 +1,10 @@
-package com.xjtu.ai.domain.agent.service.armory.mcp.client.factory;
+package com.xjtu.ai.domain.agent.service.armory.matter.mcp.client.factory;
 
 import com.xjtu.ai.domain.agent.model.valobj.AiAgentConfigTableVO;
-import com.xjtu.ai.domain.agent.service.armory.mcp.client.ToolMcpCreateService;
-import com.xjtu.ai.domain.agent.service.armory.mcp.client.impl.LocalToolMcpCreateService;
-import com.xjtu.ai.domain.agent.service.armory.mcp.client.impl.SSEToolMcpCreateService;
+import com.xjtu.ai.domain.agent.service.armory.matter.mcp.client.ToolMcpCreateService;
+import com.xjtu.ai.domain.agent.service.armory.matter.mcp.client.impl.LocalToolMcpCreateService;
+import com.xjtu.ai.domain.agent.service.armory.matter.mcp.client.impl.SSEToolMcpCreateService;
+import com.xjtu.ai.domain.agent.service.armory.matter.mcp.client.impl.StdioToolMcpCreateService;
 import com.xjtu.ai.types.enums.ResponseCode;
 import com.xjtu.ai.types.exception.AppException;
 import lombok.extern.slf4j.Slf4j;
@@ -27,7 +28,7 @@ public class DefaultMcpClientFactory {
     private LocalToolMcpCreateService localToolMcpCreateService;
 
     @Resource
-    private ToolMcpCreateService toolMcpCreateService;
+    private StdioToolMcpCreateService stdioToolMcpCreateService;
 
     public ToolMcpCreateService getToolMcpCreateService(AiAgentConfigTableVO.Module.ChatModel.ToolMcp toolMcp) {
         if (toolMcp.getLocal() != null) {
@@ -37,7 +38,7 @@ public class DefaultMcpClientFactory {
             return sseToolMcpCreateService;
         }
         if (toolMcp.getStdio() != null) {
-            return toolMcpCreateService;
+            return stdioToolMcpCreateService;
         }
         throw new AppException(ResponseCode.NOT_FOUND_METHOD.getCode(), ResponseCode.NOT_FOUND_METHOD.getInfo());
     }

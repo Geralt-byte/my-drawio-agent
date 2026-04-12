@@ -188,7 +188,7 @@ public class AiAgentConfigTableVO {
                 }
 
                 @Data
-                public static class LocalParameters{
+                public static class LocalParameters {
                     /**
                      * bean配置mcp服务
                      */
@@ -251,6 +251,7 @@ public class AiAgentConfigTableVO {
         @Data
         public static class Runner {
             private String agentName;
+            private List<String> pluginNameList;
         }
     }
 }
