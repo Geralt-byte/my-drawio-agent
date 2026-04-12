@@ -120,6 +120,11 @@ public class AiAgentConfigTableVO {
                  */
                 private StdioServerParameters stdio;
 
+                /**
+                 * local方式连接的MCP服务端参数
+                 */
+                private LocalParameters local;
+
                 @Data
                 public static class SSEServerParameters {
 
@@ -180,6 +185,14 @@ public class AiAgentConfigTableVO {
                          */
                         private Map<String, String> env;
                     }
+                }
+
+                @Data
+                public static class LocalParameters{
+                    /**
+                     * bean配置mcp服务
+                     */
+                    private String name;
                 }
             }
         }
