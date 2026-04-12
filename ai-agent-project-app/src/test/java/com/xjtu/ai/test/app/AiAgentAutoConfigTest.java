@@ -50,4 +50,22 @@ public class AiAgentAutoConfigTest {
 
         log.info("测试结果:{}", JSON.toJSONString(outputs));
     }
+
+    @Test
+    public void test_02() throws InterruptedException {
+        AIAgentRegisterVO aiAgentRegisterVO = applicationContext.getBean("100002", AIAgentRegisterVO.class);
+
+        String appName = aiAgentRegisterVO.getAppName();
+        InMemoryRunner runner = aiAgentRegisterVO.getRunner();
+
+        Session session = runner.sessionService().createSession(appName, "mlei").blockingGet();
+
+        Content msg = Content.fromParts(Part.fromText("详细介绍618年太原起兵-626年玄武门之变之间唐朝的对外征战"));
+        Flowable<Event> events = runner.runAsync("mlei", session.id(), msg);
+
+        List<String> outputs = new ArrayList<>();
+        events.blockingForEach(event -> outputs.add(event.stringifyContent()));
+
+        log.info("测试结果:{}", JSON.toJSONString(outputs));
+    }
 }

@@ -1,0 +1,31 @@
+ai:
+  agent:
+    config:
+      tables:
+        singleAgent:
+          app-name: singleAgent
+          agent:
+            agent-id: 100002
+            agent-name: 单个智能体
+            agent-desc: 单个智能体
+          module:
+            ai-api:
+              base-url: https://open.bigmodel.cn/api/paas/
+              api-key: 835eab0c34d840639f04c901c96e2639.PhMbXRyA0DQZq5ij
+              completions-path: v4/chat/completions
+              embeddings-path: v4/embeddings
+            chat-model:
+              model: glm-4.6
+              tool-mcp-list:
+                - sse:
+                    name: baidu-search
+                    base-uri: http://appbuilder.baidu.com/v2/ai_search/mcp/
+                    sse-endpoint: sse?api_key=bce-v3/ALTAK-8aUFxUIzNOoRuP3sn1gRG/605c615edb6d9b26b361a78215add2ee8fe2e362
+                    request-timeout: 50000
+            agents:
+              - name: chatAgent
+                description: 唐朝历史解读.
+                instruction: |
+                  你是一个精通唐朝历史的智能体，能够根据用户的问题，提供准确的历史信息。
+            runner:
+              agent-name: chatAgent

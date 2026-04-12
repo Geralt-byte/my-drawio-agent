@@ -1,6 +1,7 @@
 package com.xjtu.ai.domain.agent.service.armory.node;
 
 import cn.bugstack.wrench.design.framework.tree.StrategyHandler;
+import com.google.adk.agents.BaseAgent;
 import com.google.adk.agents.SequentialAgent;
 import com.google.adk.runner.InMemoryRunner;
 import com.xjtu.ai.domain.agent.model.entity.ArmoryCommandEntity;
@@ -32,9 +33,11 @@ public class RunnerNode extends AbstractArmorySupport {
         String agentId = agent.getAgentId();
         String agentDesc = agent.getAgentDesc();
 
-        SequentialAgent sequentialAgent = dynamicContext.getSequentialAgent();
+        AiAgentConfigTableVO.Module.Runner runnerConfig = aiAgentConfigTableVO.getModule().getRunner();
 
-        InMemoryRunner runner = new InMemoryRunner(sequentialAgent, appName);
+        BaseAgent baseAgent = dynamicContext.getAgentGroup().get(runnerConfig.getAgentName());
+
+        InMemoryRunner runner = new InMemoryRunner(baseAgent, appName);
 
         AIAgentRegisterVO aiAgentRegisterVO = AIAgentRegisterVO.builder()
                 .appName(appName)

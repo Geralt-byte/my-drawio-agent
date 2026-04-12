@@ -44,8 +44,6 @@ public class DefaultArmoryFactory {
 
         private ChatModel chatModel;
 
-        private SequentialAgent sequentialAgent;
-
         private Map<String, BaseAgent> agentGroup = new HashMap<>();
 
         private List<AiAgentConfigTableVO.Module.AgentWorkflow> agentWorkflows = new ArrayList<>();

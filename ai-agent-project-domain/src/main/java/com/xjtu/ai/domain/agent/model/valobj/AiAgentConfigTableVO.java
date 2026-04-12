@@ -64,6 +64,11 @@ public class AiAgentConfigTableVO {
         private List<Agent> agents;
 
         /**
+         * 运行器配置
+         */
+        private Runner runner;
+
+        /**
          * Agent工作流配置列表
          */
         private List<AgentWorkflow> agentWorkflows;
@@ -228,6 +233,11 @@ public class AiAgentConfigTableVO {
              * 工作流最大迭代次数，默认值 3
              */
             private Integer maxIterations = 3;
+        }
+
+        @Data
+        public static class Runner {
+            private String agentName;
         }
     }
 }
