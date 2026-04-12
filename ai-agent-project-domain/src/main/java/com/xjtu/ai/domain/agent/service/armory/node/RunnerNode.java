@@ -9,7 +9,11 @@ import com.xjtu.ai.domain.agent.model.valobj.AIAgentRegisterVO;
 import com.xjtu.ai.domain.agent.model.valobj.AiAgentConfigTableVO;
 import com.xjtu.ai.domain.agent.service.armory.AbstractArmorySupport;
 import com.xjtu.ai.domain.agent.service.armory.factory.DefaultArmoryFactory;
+import com.xjtu.ai.types.enums.ResponseCode;
+import com.xjtu.ai.types.exception.AppException;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+import org.jspecify.annotations.NonNull;
 import org.springframework.stereotype.Service;
 
 /**
@@ -33,11 +37,7 @@ public class RunnerNode extends AbstractArmorySupport {
         String agentId = agent.getAgentId();
         String agentDesc = agent.getAgentDesc();
 
-        AiAgentConfigTableVO.Module.Runner runnerConfig = aiAgentConfigTableVO.getModule().getRunner();
-
-        BaseAgent baseAgent = dynamicContext.getAgentGroup().get(runnerConfig.getAgentName());
-
-        InMemoryRunner runner = new InMemoryRunner(baseAgent, appName);
+        InMemoryRunner runner = getRunner(dynamicContext, aiAgentConfigTableVO, appName);
 
         AIAgentRegisterVO aiAgentRegisterVO = AIAgentRegisterVO.builder()
                 .appName(appName)
@@ -50,6 +50,21 @@ public class RunnerNode extends AbstractArmorySupport {
         registerBean(agentId, AIAgentRegisterVO.class, aiAgentRegisterVO);
 
         return aiAgentRegisterVO;
+    }
+
+    @NonNull
+    private static InMemoryRunner getRunner(DefaultArmoryFactory.DynamicContext dynamicContext, AiAgentConfigTableVO aiAgentConfigTableVO, String appName) {
+        AiAgentConfigTableVO.Module.Runner runnerConfig = aiAgentConfigTableVO.getModule().getRunner();
+        String agentName = runnerConfig.getAgentName();
+
+        if (StringUtils.isBlank(agentName)) {
+            log.error("runner.agentName is null");
+            throw new AppException(ResponseCode.ILLEGAL_PARAMETER.getCode(), ResponseCode.ILLEGAL_PARAMETER.getInfo());
+        }
+
+        BaseAgent baseAgent = dynamicContext.getAgentGroup().get(agentName);
+
+        return new InMemoryRunner(baseAgent, appName);
     }
 
     @Override

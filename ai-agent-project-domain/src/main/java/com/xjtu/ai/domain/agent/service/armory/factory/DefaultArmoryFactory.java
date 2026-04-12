@@ -2,7 +2,6 @@ package com.xjtu.ai.domain.agent.service.armory.factory;
 
 import cn.bugstack.wrench.design.framework.tree.StrategyHandler;
 import com.google.adk.agents.BaseAgent;
-import com.google.adk.agents.SequentialAgent;
 import com.xjtu.ai.domain.agent.model.entity.ArmoryCommandEntity;
 import com.xjtu.ai.domain.agent.model.valobj.AIAgentRegisterVO;
 import com.xjtu.ai.domain.agent.model.valobj.AiAgentConfigTableVO;
@@ -17,7 +16,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.*;
-import java.util.stream.Collectors;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author mlei@xjtu
@@ -39,14 +38,16 @@ public class DefaultArmoryFactory {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class DynamicContext {
-        /*LLM API*/
+
         private OpenAiApi openAiApi;
 
         private ChatModel chatModel;
 
         private Map<String, BaseAgent> agentGroup = new HashMap<>();
 
-        private List<AiAgentConfigTableVO.Module.AgentWorkflow> agentWorkflows = new ArrayList<>();
+        private AtomicInteger currentStepIndex = new AtomicInteger(0);
+
+        private AiAgentConfigTableVO.Module.AgentWorkflow currentAgentWorkflow;
 
         private Map<String, Object> dataObjects = new HashMap<>();
 
@@ -74,6 +75,14 @@ public class DefaultArmoryFactory {
             }
 
             return agents;
+        }
+
+        public void addCurrentStepIndex() {
+            currentStepIndex.incrementAndGet();
+        }
+
+        public int getCurrentStepIndex() {
+            return currentStepIndex.get();
         }
     }
 }
