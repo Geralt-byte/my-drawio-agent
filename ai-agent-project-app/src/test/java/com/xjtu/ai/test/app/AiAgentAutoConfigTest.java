@@ -60,7 +60,25 @@ public class AiAgentAutoConfigTest {
 
         Session session = runner.sessionService().createSession(appName, "mlei").blockingGet();
 
-        Content msg = Content.fromParts(Part.fromText("详细介绍618年太原起兵-626年玄武门之变之间唐朝的对外征战"));
+        Content msg = Content.fromParts(Part.fromText("详细介绍安史之乱"));
+        Flowable<Event> events = runner.runAsync("mlei", session.id(), msg);
+
+        List<String> outputs = new ArrayList<>();
+        events.blockingForEach(event -> outputs.add(event.stringifyContent()));
+
+        log.info("测试结果:{}", JSON.toJSONString(outputs));
+    }
+
+    @Test
+    public void test_03() throws InterruptedException {
+        AIAgentRegisterVO aiAgentRegisterVO = applicationContext.getBean("100003", AIAgentRegisterVO.class);
+
+        String appName = aiAgentRegisterVO.getAppName();
+        InMemoryRunner runner = aiAgentRegisterVO.getRunner();
+
+        Session session = runner.sessionService().createSession(appName, "mlei").blockingGet();
+
+        Content msg = Content.fromParts(Part.fromText("你有什么功能"));
         Flowable<Event> events = runner.runAsync("mlei", session.id(), msg);
 
         List<String> outputs = new ArrayList<>();
