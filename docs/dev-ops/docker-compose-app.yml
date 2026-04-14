@@ -1,17 +1,27 @@
 # /usr/local/bin/docker-compose -f /docs/dev-ops/environment/environment-docker-compose-2.4.yml up -d
-version: '3.8'
+version: '3.9'
 # docker-compose -f docker-compose-app.yml up -d
 # 你需要修改system为你自身系统的仓库名
 services:
-  ai-agent-project:
-    image: system/ai-agent-project:1.0
-    container_name: ai-agent-project
+  draw-io-app:
+    image: mlei/draw-io-app:1.0
+    container_name: draw-io-app
     restart: on-failure
     ports:
-      - "8091:8091"
+      - "8092:8092"
     environment:
       - TZ=PRC
-      - SERVER_PORT=8091
+      - SERVER_PORT=8092
+      # 智能体 DRAWIOAGENT 配置，更换 base_url、api_key、model、以及百度搜索的 api_key 「https://console.bce.baidu.com/iam/?_=1753597622044#/iam/apikey/list」
+      - AI_AGENT_CONFIG_TABLES_DRAWIOAGENT_MODULE_AI_API_BASE_URL=https://apis.itedus.cn/
+      - AI_AGENT_CONFIG_TABLES_DRAWIOAGENT_MODULE_AI_API_API_KEY=sk-NGzHyqKzbKZy7C1tEc48E940Bc564a3cA8Fb575dEb85A291
+      - AI_AGENT_CONFIG_TABLES_DRAWIOAGENT_MODULE_AI_API_COMPLETIONS_PATH=v1/chat/completions
+      - AI_AGENT_CONFIG_TABLES_DRAWIOAGENT_MODULE_AI_API_EMBEDDINGS_PATH=v1/embeddings
+      - AI_AGENT_CONFIG_TABLES_DRAWIOAGENT_MODULE_CHAT_MODEL_MODEL=gpt-5.1
+      - AI_AGENT_CONFIG_TABLES_DRAWIOAGENT_MODULE_CHAT_MODEL_TOOL_MCP_LIST_0_SSE_NAME=baidu-search
+      - AI_AGENT_CONFIG_TABLES_DRAWIOAGENT_MODULE_CHAT_MODEL_TOOL_MCP_LIST_0_SSE_BASE_URI=http://appbuilder.baidu.com/v2/ai_search/mcp/
+      - AI_AGENT_CONFIG_TABLES_DRAWIOAGENT_MODULE_CHAT_MODEL_TOOL_MCP_LIST_0_SSE_SSE_ENDPOINT=sse?api_key=bce-v3/ALTAK-8aUFxUIzNOoRuP3sn1gRG/605c615edb6d9b26b361a78215add2ee8fe2e362
+      - AI_AGENT_CONFIG_TABLES_DRAWIOAGENT_MODULE_CHAT_MODEL_TOOL_MCP_LIST_0_SSE_REQUEST_TIMEOUT=500000
     volumes:
       - ./log:/data/log
     logging:

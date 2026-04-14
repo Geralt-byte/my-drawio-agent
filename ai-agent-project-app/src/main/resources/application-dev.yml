@@ -1,5 +1,5 @@
 server:
-  port: 8091
+  port: 8092
 
 # 线程池配置
 thread:
@@ -16,9 +16,10 @@ thread:
 spring:
   config:
     import:
-      - classpath:agent/test-agent.yml
-      - classpath:agent/single-agent.yml
-      - classpath:agent/parallel-agent.yml
+      - classpath:agent/agent-draw-io.yml
+  #      - classpath:agent/test-agent.yml
+  #      - classpath:agent/single-agent.yml
+  #      - classpath:agent/parallel-agent.yml
   datasource:
     username: root
     password: 123456
