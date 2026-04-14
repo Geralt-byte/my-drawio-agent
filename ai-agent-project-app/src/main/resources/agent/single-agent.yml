@@ -24,6 +24,9 @@ ai:
                     request-timeout: 50000
                 - local:
                     name: myToolCallbackProvider
+              tool-skills-list:
+                - type: resource
+                  path: agent/skills
             agents:
               - name: photoAgent
                 description: 图片识别助手.

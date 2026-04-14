@@ -1,4 +1,4 @@
-package com.xjtu.ai.test.api.tool;
+package com.xjtu.ai.test.api.tool.mcp;
 
 import io.modelcontextprotocol.client.McpClient;
 import io.modelcontextprotocol.client.McpSyncClient;

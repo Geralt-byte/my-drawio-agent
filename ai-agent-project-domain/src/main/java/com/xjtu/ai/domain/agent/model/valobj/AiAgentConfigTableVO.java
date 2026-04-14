@@ -104,9 +104,11 @@ public class AiAgentConfigTableVO {
             private String model;
 
             /**
-             * MCP（Model Context Protocol）工具配置列表，支持SSE和Stdio两种连接方式
+             * MCP（Model Context Protocol）工具配置列表，支持SSE、Stdio、Local三种连接方式
              */
             private List<ToolMcp> toolMcpList;
+
+            private List<ToolSkills> toolSkillsList;
 
             @Data
             public static class ToolMcp {
@@ -194,6 +196,20 @@ public class AiAgentConfigTableVO {
                      */
                     private String name;
                 }
+            }
+
+            @Data
+            public static class ToolSkills{
+
+                /**
+                 * 类型；directory（用户配置的，映射进来的）、resource（放到工程下的）
+                 */
+                private String type="directory";
+
+                /**
+                 * 路径；
+                 */
+                private String path;
             }
         }
 
