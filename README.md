@@ -819,12 +819,6 @@ A:
 
 本项目采用 Apache License 2.0 许可证 - 详见 LICENSE 文件
 
-## 联系方式
-
-- **作者**: xiaofuge (mlei@xjtu)
-- **组织**: fuzhengwei
-- **GitHub**: https://github.com/fuzhengwei
-
 ## 致谢
 
 感谢以下开源项目：

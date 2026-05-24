@@ -819,12 +819,6 @@ Contributions are welcome! Feel free to submit code, report issues, or suggest i
 
 This project is licensed under the Apache License 2.0 - see the LICENSE file for details
 
-## Contact
-
-- **Author**: xiaofuge (mlei@xjtu)
-- **Organization**: fuzhengwei
-- **GitHub**: https://github.com/fuzhengwei
-
 ## Acknowledgments
 
 Thanks to the following open source projects:
