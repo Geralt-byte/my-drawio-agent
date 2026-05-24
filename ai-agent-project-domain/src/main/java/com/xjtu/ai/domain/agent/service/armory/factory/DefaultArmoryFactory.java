@@ -70,7 +70,7 @@ public class DefaultArmoryFactory {
         /*返回子agent列表*/
         public List<BaseAgent> queryAgentList(List<String> agentNames) {
 
-            if (agentNames == null || agentNames.isEmpty()) {
+            if (agentNames == null || agentNames.isEmpty() || agentGroup == null) {
                 return Collections.emptyList();
             }
 

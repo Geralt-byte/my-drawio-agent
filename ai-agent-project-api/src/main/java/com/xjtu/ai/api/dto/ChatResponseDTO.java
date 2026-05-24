@@ -16,5 +16,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ChatResponseDTO {
 
+    private String type;
     private String content;
 }

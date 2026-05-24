@@ -1,5 +1,6 @@
 package com.xjtu.ai.trigger.http;
 
+import com.alibaba.fastjson.JSON;
 import com.xjtu.ai.api.IAgentService;
 import com.xjtu.ai.api.dto.*;
 import com.xjtu.ai.api.response.Response;
@@ -38,6 +39,7 @@ public class AgentServiceController implements IAgentService {
      * <pre>
      * curl -X GET "http://localhost:8080/api/v1/query_ai_agent_config_list"
      * </pre>
+     *
      * @return 智能体配置列表响应
      */
     @RequestMapping(value = "query_ai_agent_config_list", method = RequestMethod.GET)
@@ -83,6 +85,7 @@ public class AgentServiceController implements IAgentService {
      *   -H "Content-Type: application/json" \
      *   -d '{"agentId":"agent001","userId":"user001"}'
      * </pre>
+     *
      * @param request 创建会话请求，包含agentId和userId
      * @return 会话创建响应，包含sessionId
      */
@@ -125,6 +128,7 @@ public class AgentServiceController implements IAgentService {
      *   -H "Content-Type: application/json" \
      *   -d '{"agentId":"agent001","userId":"user001","sessionId":"session123","message":"你好"}'
      * </pre>
+     *
      * @param request 对话请求，包含agentId、userId、sessionId和message
      * @return 对话响应，包含AI回复内容
      */
@@ -141,7 +145,27 @@ public class AgentServiceController implements IAgentService {
             List<String> messages = chatService.handleMessage(request.getAgentId(), request.getUserId(), sessionId, request.getMessage());
 
             ChatResponseDTO response = new ChatResponseDTO();
-            response.setContent(String.join("\n", messages));
+
+            try {
+                // 尝试获取最后一条消息并解析
+                String result = messages.stream().reduce((first, second) -> second).orElse("");
+                ChatResponseDTO parsed = JSON.parseObject(result, ChatResponseDTO.class);
+                if (null != parsed) {
+                    response = parsed;
+                    // 如果解析后的对象 type 为空，则默认为 user
+                    if (null == response.getType()) {
+                        response.setType("user");
+                    }
+                } else {
+                    response.setType("user");
+                    response.setContent(String.join("\n", messages));
+                }
+            } catch (Exception e) {
+                response.setType("user");
+                response.setContent(String.join("\n", messages));
+            }
+
+            //response.setContent(String.join("\n", messages));
             return Response.<ChatResponseDTO>builder()
                     .code(ResponseCode.SUCCESS.getCode())
                     .info(ResponseCode.SUCCESS.getInfo())
@@ -173,6 +197,7 @@ public class AgentServiceController implements IAgentService {
      *   -H "Content-Type: application/json" \
      *   -d '{"agentId":"agent001","userId":"user001","sessionId":"session123","message":"你好"}'
      * </pre>
+     *
      * @param request 对话请求，包含agentId、userId、sessionId和message
      * @return ResponseBodyEmitter 用于流式响应
      */
