@@ -1,3 +1,9 @@
+<div align="center">
+
+English Version | [中文版本](README.md)
+
+</div>
+
 # AI Agent Project
 
 ## Project Overview
