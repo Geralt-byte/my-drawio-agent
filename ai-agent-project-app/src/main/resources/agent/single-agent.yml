@@ -11,7 +11,7 @@ ai:
           module:
             ai-api:
               base-url: https://open.bigmodel.cn/api/paas/
-              api-key: 835eab0c34d840639f04c901c96e2639.PhMbXRyA0DQZq5ij
+              api-key: your_apikey
               completions-path: v4/chat/completions
               embeddings-path: v4/embeddings
             chat-model:
@@ -20,7 +20,7 @@ ai:
                 - sse:
                     name: baidu-search
                     base-uri: http://appbuilder.baidu.com/v2/ai_search/mcp/
-                    sse-endpoint: sse?api_key=bce-v3/ALTAK-8aUFxUIzNOoRuP3sn1gRG/605c615edb6d9b26b361a78215add2ee8fe2e362
+                    sse-endpoint: your_apikey
                     request-timeout: 50000
                 - local:
                     name: myToolCallbackProvider
