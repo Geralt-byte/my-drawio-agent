@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Agent Project</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 60px 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+            font-weight: 700;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 40px;
+            font-size: 1.1em;
+            line-height: 1.6;
+        }
+
+        .language-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+
+        .lang-btn {
+            padding: 15px 30px;
+            font-size: 1.1em;
+            font-weight: 600;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .lang-btn.chinese {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .lang-btn.english {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+
+        .lang-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .features {
+            margin-top: 40px;
+            text-align: left;
+        }
+
+        .feature-item {
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+            color: #555;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .feature-item:last-child {
+            border-bottom: none;
+        }
+
+        .feature-icon {
+            width: 8px;
+            height: 8px;
+            background: #667eea;
+            border-radius: 50%;
+        }
+
+        .tech-stack {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        .tech-stack h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+
+        .tech-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .tech-tag {
+            background: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            color: #666;
+            border: 1px solid #ddd;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 40px 20px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            .language-buttons {
+                flex-direction: column;
+            }
+
+            .lang-btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>AI Agent Project</h1>
+        <p class="subtitle">
+            基于DDD架构的企业级AI智能体平台<br>
+            Enterprise-grade AI Agent Platform with DDD Architecture
+        </p>
+
+        <div class="features">
+            <div class="feature-item">
+                <span class="feature-icon"></span>
+                <span>多智能体协作 - Multi-Agent Collaboration</span>
+            </div>
+            <div class="feature-item">
+                <span class="feature-icon"></span>
+                <span>灵活的工具集成 - Flexible Tool Integration</span>
+            </div>
+            <div class="feature-item">
+                <span class="feature-icon"></span>
+                <span>流式对话支持 - Streaming Conversation</span>
+            </div>
+            <div class="feature-item">
+                <span class="feature-icon"></span>
+                <span>企业级架构 - Enterprise Architecture</span>
+            </div>
+        </div>
+
+        <div class="tech-stack">
+            <h3>技术栈 - Technology Stack</h3>
+            <div class="tech-tags">
+                <span class="tech-tag">Spring Boot 3.4.3</span>
+                <span class="tech-tag">Google ADK</span>
+                <span class="tech-tag">Spring AI</span>
+                <span class="tech-tag">LangChain4j</span>
+                <span class="tech-tag">Java 17</span>
+                <span class="tech-tag">DDD Architecture</span>
+            </div>
+        </div>
+
+        <div class="language-buttons">
+            <a href="README.md" class="lang-btn chinese">
+                🇨🇳 中文文档
+            </a>
+            <a href="README_EN.md" class="lang-btn english">
+                🇺🇸 English Docs
+            </a>
+        </div>
+    </div>
+</body>
+</html>
